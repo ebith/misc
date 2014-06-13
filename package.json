@@ -1,0 +1,13 @@
+{
+  "name": "misc",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "coffee-script": "^1.7.1",
+    "gulp": "^3.8.0",
+    "gulp-changed": "^0.4.0",
+    "gulp-coffee": "^2.0.1"
+  },
+  "author": "ebith",
+  "license": "MIT"
+}
