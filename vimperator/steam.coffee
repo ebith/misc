@@ -52,7 +52,10 @@ subCommands = [
     ]
     completer: ownedGamesCompleter
   new Command 's[earch]', 'search and open store page', (args) ->
-    liberator.open "http://store.steampowered.com/app/#{args}/", liberator.NEW_TAB
+    if /\d+/.test args
+      liberator.open "http://store.steampowered.com/app/#{args}/", liberator.NEW_TAB
+    else
+      liberator.open "http://store.steampowered.com/search/?cc=#{countryCode}&category1=998&sort_order=ASC&term=#{args}", liberator.NEW_TAB
   ,
     literal: 0
     completer: (context, args) ->
