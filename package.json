@@ -2,6 +2,9 @@
   "name": "misc",
   "version": "0.0.0",
   "dependencies": {},
+  "scripts": {
+    "start": "gulp"
+  },
   "devDependencies": {
     "coffee-script": "^1.7.1",
     "gulp": "^3.8.0",
