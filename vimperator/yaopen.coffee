@@ -1,4 +1,7 @@
 sites = liberator.globalVariables.yaopen or
+  codic:
+    icon: 'http://codic.jp/favicon.gif'
+    url: 'http://codic.jp/search?q=%ARG%'
   wolframAlpha:
     icon: 'http://www.wolframcdn.com/images/alpha.fav.png'
     url: 'http://www.wolframalpha.com/input/?i=%ARG%'
