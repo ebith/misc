@@ -5,10 +5,12 @@ onSummaryChanged = ->
   if summary.allHaveStopped or summary.progressTotalBytes is 0
     updateDownloadState null
   else
-    do countDownloads
-    progressCurrentBytes = Math.min summary.progressTotalBytes, summary.progressCurrentBytes
-    percent = Math.floor progressCurrentBytes / summary.progressTotalBytes * 100
-    updateDownloadState "#{percent}% of #{downloads}"
+    @downloads = 0
+    list.getAll().then (downloads) =>
+      @downloads++ for download in downloads when download.hasProgress and not download.stopped
+      progressCurrentBytes = Math.min summary.progressTotalBytes, summary.progressCurrentBytes
+      percent = Math.floor progressCurrentBytes / summary.progressTotalBytes * 100
+      updateDownloadState "\u2193#{percent}% of #{@downloads}"
 
 Downloads.getSummary Downloads.ALL
   .then (summary) ->
@@ -18,13 +20,6 @@ Downloads.getSummary Downloads.ALL
 Downloads.getList Downloads.ALL
   .then (list) ->
     @list = list
-
-countDownloads = ->
-  @downloads = 0
-  list.getAll().then (downloads) ->
-    for download in downloads
-      if download.hasProgress and not download.succeeded
-        @downloads++
 
 e = document.createElement 'label'
 e.id = 'liberator-status-download'
