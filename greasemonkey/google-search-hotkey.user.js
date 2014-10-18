@@ -15,7 +15,7 @@
   (main = function() {
     var Lang, Time, lr, qdr, setLocation, v, _i, _j, _len, _len1, _ref, _ref1;
     Time = ['h', 'd', 'w', 'm', 'y', 'a'];
-    Lang = ['lang_en', 'lang_ja'];
+    Lang = ['lang_ja', 'lang_en'];
     _ref = window.location.search.split('&');
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       v = _ref[_i];

@@ -10,7 +10,7 @@
 
 do main = ->
   Time = ['h', 'd', 'w', 'm', 'y', 'a']
-  Lang = ['lang_en', 'lang_ja']
+  Lang = ['lang_ja', 'lang_en']
 
   qdr = /(=|,)qdr:(.)(,|&|$)/.exec(v)[2] for v in window.location.search.split '&' when /^tbs=/.test v
   lr = /^lr=(.*)$/.exec(v)[1] for v in window.location.search.split '&' when /^lr=/.test v
