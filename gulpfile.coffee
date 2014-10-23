@@ -10,8 +10,16 @@ gulp.task 'greasemonkey', ->
     .pipe do coffee
     .pipe gulp.dest 'greasemonkey'
 
+gulp.task 'vimperator', ->
+  gulp.src 'vimperator/src/*.coffee'
+    .pipe changed 'vimperator'
+    .pipe do plumber
+    .pipe do coffee
+    .pipe gulp.dest 'vimperator'
+
 gulp.task 'watch', ->
   gulp.watch 'greasemonkey/src/*.coffee', ['greasemonkey']
+  gulp.watch 'vimperator/src/*.coffee', ['vimperator']
 
-gulp.task 'build', ['greasemonkey']
+gulp.task 'build', ['greasemonkey', 'vimperator']
 gulp.task 'default', ['build', 'watch']
