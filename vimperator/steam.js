@@ -100,7 +100,7 @@
       literal: 0,
       completer: function(context, args) {
         var options;
-        context.title = ['Title', 'Price, Metascore, Released'];
+        context.title = ['Title', 'Released'];
         context.keys = {
           text: 'appid'
         };
@@ -109,7 +109,7 @@
           function(item, text) {
             return new TemplateXML("<span highlight=\"CompIcon\"></span><span class=\"td-strut\"/>" + (util.escapeHTML(item.item.name)));
           }, function(item, text) {
-            return new TemplateXML("<span style=\"display: inline-block; width: 7em;\">" + (util.escapeHTML(item.item.price)) + "</span><span style=\"display: inline-block; width: 3em;\">" + (item.item.metascore ? util.escapeHTML(item.item.metascore) : '-') + "</span>" + (util.escapeHTML(item.item.released)));
+            return new TemplateXML("" + (util.escapeHTML(item.item.released)));
           }
         ];
         context.filters = [];
@@ -120,24 +120,30 @@
             url: "http://store.steampowered.com/search/results?cc=" + countryCode + "&category1=998&sort_order=ASC&term=" + args
           };
           return request(options, function(res) {
-            var elem;
+            var elem, _i, _len, _ref;
             context.incomplete = false;
-            if (res.status === 200 && res.response.getElementById('search_header')) {
+            _ref = res.response.getElementById('search_result_container').getElementsByTagName('a');
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              elem = _ref[_i];
+              liberator.log({
+                elem: elem,
+                appid: elem.href.match(/app\/(\d+)\//)[1],
+                name: elem.getElementsByClassName('title').textContent,
+                released: elem.getElementsByClassName('search_released')[0].textContent
+              });
+            }
+            if (res.status === 200 && res.response.getElementById('search_result_container')) {
               return context.completions = (function() {
-                var _i, _len, _ref, _results;
-                _ref = res.response.getElementById('search_header').nextElementSibling.children;
+                var _j, _len1, _ref1, _results;
+                _ref1 = res.response.getElementById('search_result_container').getElementsByTagName('a');
                 _results = [];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  elem = _ref[_i];
-                  if (elem.tagName === 'A') {
-                    _results.push({
-                      appid: elem.href.match(/app\/(\d+)\//)[1],
-                      name: elem.getElementsByClassName('search_name')[0].getElementsByTagName('h4')[0].textContent,
-                      price: elem.getElementsByClassName('search_price')[0].lastChild.textContent,
-                      metascore: elem.getElementsByClassName('search_metascore')[0].textContent,
-                      released: elem.getElementsByClassName('search_released')[0].textContent
-                    });
-                  }
+                for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                  elem = _ref1[_j];
+                  _results.push({
+                    appid: elem.href.match(/app\/(\d+)\//)[1],
+                    name: elem.getElementsByClassName('title')[0].textContent,
+                    released: elem.getElementsByClassName('search_released')[0].textContent
+                  });
                 }
                 return _results;
               })();

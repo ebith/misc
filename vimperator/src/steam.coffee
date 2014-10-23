@@ -59,12 +59,12 @@ subCommands = [
   ,
     literal: 0
     completer: (context, args) ->
-      context.title = ['Title', 'Price, Metascore, Released']
+      context.title = ['Title', 'Released']
       context.keys = text: 'appid'
       context.compare = CompletionContext.Sort.unsorted
       context.process = [
         (item, text) -> new TemplateXML "<span highlight=\"CompIcon\"></span><span class=\"td-strut\"/>#{util.escapeHTML(item.item.name)}",
-        (item, text) -> new TemplateXML "<span style=\"display: inline-block; width: 7em;\">#{util.escapeHTML(item.item.price)}</span><span style=\"display: inline-block; width: 3em;\">#{if item.item.metascore then util.escapeHTML(item.item.metascore) else '-'}</span>#{util.escapeHTML(item.item.released)}",
+        (item, text) -> new TemplateXML "#{util.escapeHTML(item.item.released)}",
       ]
       context.filters = []
       if args.literalArg.length > 2
@@ -74,14 +74,19 @@ subCommands = [
           url: "http://store.steampowered.com/search/results?cc=#{countryCode}&category1=998&sort_order=ASC&term=#{args}"
         request options, (res) ->
           context.incomplete = false
-          if res.status is 200 and res.response.getElementById('search_header')
+          for elem in res.response.getElementById('search_result_container').getElementsByTagName('a')
+            liberator.log({
+              elem: elem
+              appid: elem.href.match(/app\/(\d+)\//)[1]
+              name: elem.getElementsByClassName('title').textContent
+              released: elem.getElementsByClassName('search_released')[0].textContent
+            })
+          if res.status is 200 and res.response.getElementById('search_result_container')
             context.completions = ({
               appid: elem.href.match(/app\/(\d+)\//)[1]
-              name: elem.getElementsByClassName('search_name')[0].getElementsByTagName('h4')[0].textContent
-              price: elem.getElementsByClassName('search_price')[0].lastChild.textContent
-              metascore: elem.getElementsByClassName('search_metascore')[0].textContent
+              name: elem.getElementsByClassName('title')[0].textContent
               released: elem.getElementsByClassName('search_released')[0].textContent
-            } for elem in res.response.getElementById('search_header').nextElementSibling.children when elem.tagName is 'A')
+            } for elem in res.response.getElementById('search_result_container').getElementsByTagName('a'))
 
   new Command 'p[lay]', 'play game', (args) ->
     liberator.open "steam://run/#{args}"
