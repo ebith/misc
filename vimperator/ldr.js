@@ -7,7 +7,11 @@
  */
 
 (function() {
-  var rate, subCommands;
+  var rate, subCommands, w;
+
+  w = function() {
+    return content.wrappedJSObject;
+  };
 
   rate = function() {
     return content.document.getElementById('rate_img').src.replace(/^.*(\d)\.gif$/, '$1') - 0;
@@ -15,24 +19,26 @@
 
   subCommands = [
     new Command('next', '', function(args) {
-      return content.wrappedJSObject.Control.go_next();
+      return w().Control.go_next();
     }), new Command('prev', '', function(args) {
-      return content.wrappedJSObject.Control.go_prev();
+      return w().Control.go_prev();
     }), new Command('open', '', function(args) {
       if (typeof TreeStyleTabService !== "undefined" && TreeStyleTabService !== null) {
         TreeStyleTabService.readyToOpenChildTabNow(gBrowser.selectedTab);
       }
-      return liberator.open(content.wrappedJSObject.get_active_item(true).link, liberator.NEW_BACKGROUND_TAB);
+      liberator.open(w().get_active_item(true).link, liberator.NEW_BACKGROUND_TAB);
+      return w().Control.go_next();
     }), new Command('readitlater', '', function(args) {
       var item;
-      item = content.wrappedJSObject.get_active_item(true);
-      return plugins.readitlater.API.add(item.link, item.title, function() {
+      item = w().get_active_item(true);
+      plugins.readitlater.API.add(item.link, item.title, function() {
         return liberator.echo("[readitlater] added: " + item.title + " - " + item.link);
       });
+      return w().Control.go_next();
     }), new Command('incrementrate', '', function(args) {
-      return content.wrappedJSObject.vi[rate() + 1]();
+      return w().vi[rate() + 1]();
     }), new Command('decrementrate', '', function(args) {
-      return content.wrappedJSObject.vi[rate() - 1]();
+      return w().vi[rate() - 1]();
     })
   ];
 
