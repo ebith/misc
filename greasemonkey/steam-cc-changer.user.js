@@ -3,6 +3,8 @@
 // @version 1.1
 // @author ebith
 // @include http://store.steampowered.com/*
+// @grant none
+// @noframes
 // ==/UserScript==
 
 (function(){

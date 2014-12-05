@@ -6,6 +6,7 @@
 // @author ebith
 // @include http://www.nicovideo.jp/watch/*
 // @grant none
+// @noframes
 // ==/UserScript==
 ref: https://greasyfork.org/scripts/452-shinjukuwatch/code
  */

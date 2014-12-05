@@ -6,6 +6,7 @@
 // @author ebith
 // @include https://www.google.co.jp/search*
 // @grant none
+// @noframes
 // ==/UserScript==
  */
 

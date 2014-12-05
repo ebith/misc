@@ -3,6 +3,8 @@
 // @version 1.1
 // @author ebith
 // @include https://login.japannetbank.co.jp/wctx/LoginAction.do*
+// @grant none
+// @noframes
 // ==/UserScript==
 
 (function(){
